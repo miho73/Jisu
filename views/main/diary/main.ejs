@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Diary</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/diary/diary.css">
+    </head>
+    <body style="background-image: url(/diary/<%= random_img%>);">
+        <div>
+            <h1 class="hi">안녕하세요.</h1>
+            <div class="today_field">
+                <form method="POST" class="today_form" onsubmit="return confirm('일단 기록되면 수정할 수 없습니다. 기록합니까?');">
+                    <label class="form_label">오늘에 대해서</label>
+                    <textarea name="today" class="field" required spellcheck="false"></textarea>
+                    <button class="submit" type="submit">확인</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

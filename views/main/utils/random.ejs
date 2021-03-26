@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>RANDOMs</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <form method="POST" class="center">
+            <input type="number" name="from" class="fontsmall number_input" min="0", max="100000" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<%= from_value%>">
+            <label class="fontsmall">~</label>
+            <input type="number" name="to" class="fontsmall number_input" min="0", max="100000" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="<%= to_value%>">
+            <button role="submit" class="fontsmall submit">Generate</button>
+        </form>
+        <h1 id="random_display" class="center"><%= number%></h1>
+    </body>
+</html>

@@ -1,0 +1,68 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+* {
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+    color: #eee;
+}
+
+body {  
+    background-color: #0d1117;
+    padding: 0;
+    margin: 0;
+}
+
+div
+.today_field {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+h1.hi{
+    text-align: center;
+    font-size: 40px;
+}
+textarea.field {
+    background-color: transparent;
+    width: 100%;
+    height: 3cm;
+    resize: vertical;
+    margin-top: 5px;
+    font-size: 17px;
+    outline-color: cornflowerblue;
+}
+label.form_label {
+    font-size: 35px;
+}
+button.submit {
+    background-color: transparent;
+    font-size: 30px;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.submit:hover {
+    background-color: #0002;
+}
+.submit:active {
+    background-color: #0005;
+}
+
+@media (max-width: 1000px) {
+    h1.hi{
+        text-align: center;
+        font-size: 500%;
+    }
+    textarea.field {
+        height: 5cm;
+        font-size: 45px;
+    }
+    label.form_label {
+        font-size: 40px;
+    }
+    button.submit {
+        font-size: 35px;
+    }
+}
