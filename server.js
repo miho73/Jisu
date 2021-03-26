@@ -84,7 +84,9 @@ function CheckIdentity(req) {
 app.get('/', (req, res)=>{
     const id = req.cookies.SESSION;
     if(CheckIdentity(req)) {
-        res.render("main/index.ejs");
+        res.render("main/index.ejs", {
+            name: req.session.user.name
+        });
     }
     else {
         res.redirect("/auth");
@@ -102,6 +104,9 @@ app.get('/:path', (req, res)=>{
                 visible: "collapse"
             });
         }
+    }
+    else if (req.params.path == 'about') {
+        res.render('about.ejs');
     }
     else {
         try {
@@ -170,10 +175,8 @@ app.post('/auth', (req, res)=>{
         return;
     }
 
-    const query = `SELECT * FROM iden WHERE user_id="${req.body.u}";`;
     var sucess = false;
-    IdenDb.serialize();
-    IdenDb.all(query, (err, row) => {
+    IdenDb.all('SELECT * FROM iden WHERE user_id=?;', [req.body.u], (err, row) => {
         if(row.length == 1) {
             if(err) {
                 if(!sucess) {
@@ -335,10 +338,9 @@ app.post('/signup', (req, res)=>{
     }
     crypto.randomBytes(64, (err, buf) => {
         crypto.pbkdf2(req.body.password, buf.toString('base64'), 12495, 64, 'sha512', (err, key) => {
-            IdenDb.serialize(()=>{
-                IdenDb.each(`INSERT INTO iden(user_id, user_name, user_password, user_salt) `+
-                            `values ('${req.body.id}', '${req.body.name}', '${key.toString('base64')}', '${buf.toString('base64')}')`);
-            });
+        IdenDb.run(`INSERT INTO iden(user_id, user_name, user_password, user_salt) `+
+                   `values (?, ?, ?, ?)`,
+                   [req.body.id, req.body.name, key.toString('base64'), buf.toString('base64')]);
         });
     });
     res.redirect('/');

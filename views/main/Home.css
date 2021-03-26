@@ -4,6 +4,9 @@
 
 p {user-select: none !important;}
 a {user-select: none !important;}
+h2 {user-select: none !important;}
+h3 {user-select: none !important;}
+b {user-select: none !important;}
 
 .u-section-1 {
   background-image: url("images/can3.jpg");
