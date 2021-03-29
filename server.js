@@ -347,7 +347,6 @@ app.post('/signup', (req, res)=>{
 });
 
 app.post('/diary', (req, res)=>{
-    var id = req.cookies.SESSION;
     if(!CheckIdentity(req)) {
         sendError(403, "Forbidden", res);
         return;
@@ -359,7 +358,7 @@ app.post('/diary', (req, res)=>{
         "T"+("0" + now.getHours()).slice(-2)+":"+("0" + now.getMinutes()).slice(-2)+":"+("0" + now.getSeconds()).slice(-2)+
         (now.getTimezoneOffset()-now.getTimezoneOffset()%60)/60+":"+("0" + now.getTimezoneOffset()%60).slice(-2)+"Z",
         req.body.today,
-        Approves[id]
+        req.session.user.id
     ], function(error) {
         res.render("main/diary/done.ejs", {
             random_img: "img/1.jpg"
