@@ -25,7 +25,7 @@ app.use(favicon(__dirname + '/resources/favicon.ico'));
 app.use('/auth', express.static('views/auth'))
 app.use(cookieParser());
 
-const HTTP_PORT = 80;
+const HTTP_PORT = 8080;
 const HTTPS_PORT = 443;
 
 //Init DB
