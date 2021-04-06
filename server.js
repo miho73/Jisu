@@ -229,14 +229,6 @@ app.post('/auth', (req, res)=>{
     });
 });
 
-app.get('/.well-known/pki-validation/FF7E9E9E216747760D92326A8D6D36A3.txt', (req, res) =>{
-    res.sendFile(__dirname + "/cert/FF7E9E9E216747760D92326A8D6D36A3.txt", (err)=>{
-        if(err) {
-            sendError(404, 'That\'s an error', res);
-        }
-    });
-});
-
 app.get('/signup/:path', (req, res)=>{
     var id = req.cookies.SESSION;
     if(CheckIdentity(req)) {
@@ -376,6 +368,14 @@ app.post('/diary', (req, res)=>{
         res.render("main/diary/done.ejs", {
             random_img: "img/1.jpg"
         });
+    });
+});
+
+app.get('/.well-known/pki-validation/FF7E9E9E216747760D92326A8D6D36A3.txt', (req, res) =>{
+    res.sendFile(__dirname + "/cert/FF7E9E9E216747760D92326A8D6D36A3.txt", (err)=>{
+        if(err) {
+            sendError(404, 'That\'s an error', res);
+        }
     });
 });
 
