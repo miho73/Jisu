@@ -1,5 +1,12 @@
 'use strict';
 
+const DEBUG_FLAG = true;
+
+if(DEBUG_FLAG) {
+    console.log("YOU'RE DEBUGGING NOW. ALL SECURITY FEATURES WILL BE DISABLED.");
+    console.log("DEBUGGING SESSION IN HOSTING ON 8080(HTTP) and 4433(HTTPS)");
+}
+
 const express = require('express');
 const favicon = require('serve-favicon');
 const ejs = require('ejs')
@@ -26,7 +33,7 @@ app.use('/auth', express.static('views/auth'))
 app.use(cookieParser());
 
 const HTTP_PORT = 8080;
-const HTTPS_PORT = 443;
+const HTTPS_PORT = 4433;
 
 //Init DB
 let IdenDb = new sqlite3.Database('./db/iden.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -76,6 +83,7 @@ app.all('*', (req, res, next) => {
 });
 
 function CheckIdentity(req) {
+    if(DEBUG_FLAG) return true;
     if(req.session == undefined) return false;
     else if(req.session.user) return true;
     else return false;
@@ -84,9 +92,14 @@ function CheckIdentity(req) {
 app.get('/', (req, res)=>{
     const id = req.cookies.SESSION;
     if(CheckIdentity(req)) {
-        res.render("main/index.ejs", {
-            name: req.session.user.name
-        });
+        try {
+            res.render("main/index.ejs", {
+                name: req.session.user.name
+            });
+        }
+        catch {
+            sendError(412, "Precondition Failed", res);
+        }
     }
     else {
         res.redirect("/auth");

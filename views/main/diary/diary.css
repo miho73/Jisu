@@ -22,7 +22,7 @@ h1.hi{
     font-size: 40px;
 }
 textarea.field {
-    background-color: transparent;
+    background-color: #00000055;
     width: 100%;
     height: 3cm;
     resize: vertical;
