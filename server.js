@@ -1,6 +1,6 @@
 'use strict';
 
-const DEBUG_FLAG = true;
+const DEBUG_FLAG = false;
 
 if(DEBUG_FLAG) {
     console.log("YOU'RE DEBUGGING NOW. ALL SECURITY FEATURES WILL BE DISABLED.");
