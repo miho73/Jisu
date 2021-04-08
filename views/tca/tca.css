@@ -1,0 +1,35 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+* { font-family: 'Spoqa Han Sans Neo', 'sans-serif'; }
+
+*.sharp {
+    font-weight: 350;
+}
+.regular {
+    font-weight: 500;
+}
+.display {
+    text-align: center;
+}
+
+h1#time {
+    font-size: 3em;
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+#subject {
+    font-size: 4em;
+    margin: 0;
+    font-weight: 200;
+}
+
+h2#timepm {
+    margin: 0;
+    font-size: 2em;
+}
+
+h3#timetable {
+    margin: 0;
+    padding-right: 1em;
+    padding-left: 1em;
+}

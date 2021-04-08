@@ -1,6 +1,7 @@
 'use strict';
 
 const DEBUG_FLAG = false;
+const TCA_REQUIRED_FLAG = true;
 
 if(DEBUG_FLAG) {
     console.log("YOU'RE DEBUGGING NOW. ALL SECURITY FEATURES WILL BE DISABLED.");
@@ -66,6 +67,23 @@ DataDb.serialize(()=>{
                 'added_by INTEGER NOT NULL);');
 });
 
+var tca_subjects;
+var data = fs.readFileSync('./db/class.json');
+if(data != undefined) {
+    const classes = JSON.parse(data);
+    tca_subjects = new Array(classes.length);
+    for(let i=0; i<classes.length; i++) {
+        tca_subjects[classes[i].uid] = {
+            "name":classes[i].name,
+            "code":classes[i].zoomid
+        }
+    }
+    console.log("TCA LOADED");
+}
+else {
+    console.log("ERROR: CANNOT LOAD TCA(CLASS) SYSTEM. FATAL ERROR");
+}
+
 function sendError(errCode, errName, res) {
     res.status(errCode).render("error.ejs", {
         errorCode: errCode,
@@ -120,6 +138,18 @@ app.get('/:path', (req, res)=>{
     }
     else if (req.params.path == 'about') {
         res.render('about.ejs');
+    }
+    else if (req.params.path == 'tca') {
+        res.render('tca/tca.ejs', {
+            InitialTime: Math.round(Date.now())
+        });
+    }
+    else if (req.params.path == 'jquery.js') {
+        res.sendFile(__dirname + "/views/main/jquery.js", (err)=>{
+            if(err) {
+                sendError(err.status, err.message, res);
+            }
+        });
     }
     else {
         try {
@@ -271,6 +301,14 @@ app.get('/diary/img/:path', (req, res)=>{
     }
 });
 
+app.get('/tca/:path', (req, res)=>{
+    res.sendFile(__dirname + "/views/tca/"+req.params.path, (err)=>{
+        if(err) {
+            sendError(err.status, err.message, res);
+        }
+    });
+});
+
 app.get('/utils/:path', (req, res)=>{
     if(req.url.endsWith('.css')) {
         res.sendFile(__dirname + "/views/main/utils/"+req.params.path, (err)=>{
@@ -369,6 +407,66 @@ app.post('/diary', (req, res)=>{
             random_img: "img/1.jpg"
         });
     });
+});
+
+app.post('/tca/api/:type', (req, res)=>{
+    try {
+        if(req.params.type == 'timetable') {
+            fs.readFile('./db/timetable.json', (err, data)=>{
+                if(err) {
+                    res.sendStatus(500);
+                }
+                else {
+                    const jsn = JSON.parse(data);
+                    res.set({
+                        'Content-Type':'application/json',
+                        'Status':'200'
+                    })
+                    res.send(jsn["time"]);
+                }
+            });
+        }
+        else if(req.params.type == 'sche') {
+            const day = req.body.day;
+            if (day < 0 || day > 6) {
+                throw 'Date value out of range';
+            }
+            fs.readFile('./db/timetable.json', (err, data)=>{
+                if(err) {
+                    res.sendStatus(500);
+                }
+                else {
+                    const jsn = JSON.parse(data);
+                    res.set({
+                        'Content-Type':'application/json',
+                        'Status':'200'
+                    })
+                    res.send(jsn[day]);
+                }
+            });
+        }
+        else if(req.params.type == "subj") {
+            const reqs = req.body.tt;
+            const reqsr = reqs.split('.');
+            let retArr = new Array(reqsr.length);
+            let cnt = 0;
+            reqsr.forEach(element => {
+                retArr[cnt] = tca_subjects[element];
+                cnt++;
+            });
+            res.set({
+                'Content-Type':'application/json',
+                'Status':'200'
+            })
+            res.send(retArr);
+        }
+        else {
+            sendError(404, "Not Found");
+        }
+    }
+    catch(err) {
+        sendError(400, "Bad Request: "+err, res);
+    }
 });
 
 app.get('/.well-known/pki-validation/FF7E9E9E216747760D92326A8D6D36A3.txt', (req, res) =>{
