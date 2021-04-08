@@ -53,18 +53,24 @@ button.addrBtn {
 .toolBtn {
     font-size: 1.3em !important;
 }
+.footerBtn {
+    margin-right: 15px;
+    padding: 0.2em 1em !important;
+    float: right;
+}
 div.addrContainer {
     text-align: center;
     margin: 0.5em;
 }
 .footer {
     position: fixed;
-    bottom: 0.3em;
+    bottom: 0.5em;
     width: 100%;
+    text-align: right;
 }
 .copyright {
-    font-weight: 300;
-    font-size: 1em;
+    width: 100%;
+    text-align: left;
 }
 
 p {

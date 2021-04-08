@@ -226,7 +226,8 @@ function jojong() {
 }
 function attendance() {
     if(localStorage.getItem('name') == undefined) {
-        let name = prompt("학번과 이름을 입력해주세요. \"<여기 입력하는 문자열> 출석\"의 형태로 복사됩니다.", "20731 현창운");
+        let name = prompt("학번과 이름을 입력해주세요.\n\"<여기 입력하는 문자열> 출석\"의 형태로 복사됩니다.", "20731 현창운");
+        if(name == undefined) return;
         localStorage.setItem('name', name);
     }
     else {
@@ -240,4 +241,9 @@ function attendance() {
             }
         });
     }
+}
+function changeName() {
+    let name = prompt(`학번과 이름을 입력해주세요.\n지금은 "${localStorage.getItem('name')} 출석"이 복사됩니다.`, "20731 현창운");
+    if(name == undefined) return;
+    localStorage.setItem('name', name);
 }
