@@ -1,8 +1,13 @@
+let time, timetable, subject;
+
+function setIntervalAndExecute(fn, t) {
+    fn();
+    return(setInterval(fn, t));
+}
+
 function timeTicker() {
     let now = new Date();
     const display = document.getElementById('time');
-
-    let time, timetable, subject;
 
     //Load time interval
     $.ajax({
@@ -55,12 +60,15 @@ function timeTicker() {
 
     const htmlSubject = document.getElementById('subject');
     const htmlTl = document.getElementById('timepm');
-
+    const current = document.getElementById('current');
+    const next = document.getElementById('next');
+    const btns = document.getElementById('btnContainer');
     
-    setInterval(function() {
+    let histliveptr = -2;
+    setIntervalAndExecute(function() {
         let now = new Date();
-        display.innerText = getToday(now);
         let liveptr = -1;
+        display.innerText = getToday(now);
         const nowt = new Array(2);
         time.forEach(elem => {
             const mark = elem[0].split(':');
@@ -72,11 +80,46 @@ function timeTicker() {
         if(liveptr == timetable.length-1 && compareTime(nowt, time[timetable.length-1][1].split(':')) > 0) {
             htmlSubject.innerText = "종료";
             htmlTl.innerText = "";
+            btns.style.display = "none";
+            liveptr_upload = timetable.length;
+            return;
         }
         else if (liveptr == -1) {
             htmlSubject.innerText = "대기중";
             htmlTl.innerText = "";
+            btns.style.display = "block";
+            current.style.display = "none";
+            next.innerText = subject[liveptr+1].name;
+            liveptr_upload = -1;
+            return;
         }
+        let t1 = new Array(3), t2 = new Array(3);
+        t1[0] = now.getHours();
+        t1[1] = now.getMinutes();
+        t1[2] = now.getSeconds();
+        const tmpT = time[liveptr][1].split(':');
+        t2[0] = tmpT[0];
+        t2[1] = tmpT[1];
+        t2[2] = 0;
+        const timeRemain = getDiff(t1, t2);
+        const timeRemainStr = new Array(3);
+        timeRemainStr[0] = timeRemain[0].toString().padStart(2, '0');
+        timeRemainStr[1] = timeRemain[1].toString().padStart(2, '0');
+        timeRemainStr[2] = timeRemain[2].toString().padStart(2, '0');
+        htmlTl.innerText = timeRemainStr.join(':');
+
+        if(histliveptr == liveptr) return;
+        btns.style.display = "block";
+        current.style.display = "block";
+        histliveptr = liveptr;
+        htmlSubject.innerText = subject[liveptr].name;
+        htmlTl.innerText = "";
+        current.innerText = subject[liveptr].name;
+        console.log(liveptr+1+" "+timetable.length);
+        if(liveptr+1 < timetable.length) {
+            next.innerText = subject[liveptr+1].name;
+        }
+        liveptr_upload = liveptr;
     }, 1000);
 }
 
@@ -88,6 +131,8 @@ weekday[3]="수요일";
 weekday[4]="목요일";
 weekday[5]="금요일";
 weekday[6]="토요일";
+
+var liveptr_upload;
 
 function getToday(date) {
     const year = date.getFullYear();
@@ -122,5 +167,77 @@ function compareTime(t1, t2) {
             return 1;
         }
         else return 0;
+    }
+}
+
+/**
+ * Gets the interval of two times
+ * @param {(hour, min, second)} t1 first time
+ * @param {(hour, min, second)} t2 second time
+ * @return returns interval of two times in (hour, min, second)
+ */
+function getDiff(t1, t2) {
+    const t1_sec = t1[0]*3600 + t1[1]*60 + t1[2];
+    const t2_sec = t2[0]*3600 + t2[1]*60 + t2[2];
+    const diff = Math.abs(t1_sec-t2_sec);
+    let retArr = new Array(3);
+    retArr[0] = (diff - diff % 3600)/3600;
+    retArr[1] = (diff - diff % 60)/60;
+    retArr[2] = diff % 60;
+    return retArr;
+}
+
+function addressPreprocessor(lnk) {
+    if(lnk.startsWith('http')) {
+        window.open(lnk);
+        return true;
+    }
+}
+
+function copyCurrent() {
+    const lnk = subject[liveptr_upload].code;
+    if(addressPreprocessor(lnk)) return;
+    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+        if (result.state == "granted" || result.state == "prompt") {
+            navigator.clipboard.writeText(lnk).then(function() {
+                
+            }, function() {
+                alert("Clipboard failed");
+            });
+        }
+    });
+}
+function copyNext() {
+    const lnk = subject[liveptr_upload+1].code;
+    if(addressPreprocessor(lnk)) return;
+    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+        if (result.state == "granted" || result.state == "prompt") {
+            navigator.clipboard.writeText(lnk).then(function() {
+                
+            }, function() {
+                alert("Clipboard failed");
+            });
+        }
+    });
+}
+
+function jojong() {
+    addressPreprocessor("https://zoom.us/j/5391911505?pwd=Mmd5VDF6bW5ZanFhMVB2OGhoNGlwdz09");
+}
+function attendance() {
+    if(localStorage.getItem('name') == undefined) {
+        let name = prompt("학번과 이름을 입력해주세요. \"<여기 입력하는 문자열> 출석\"의 형태로 복사됩니다.", "20731 현창운");
+        localStorage.setItem('name', name);
+    }
+    else {
+        navigator.permissions.query({name: "clipboard-write"}).then(result => {
+            if (result.state == "granted" || result.state == "prompt") {
+                navigator.clipboard.writeText(localStorage.getItem('name')+" 출석").then(function() {
+                    
+                }, function() {
+                    alert("Clipboard failed");
+                });
+            }
+        });
     }
 }

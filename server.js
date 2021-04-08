@@ -144,13 +144,6 @@ app.get('/:path', (req, res)=>{
             InitialTime: Math.round(Date.now())
         });
     }
-    else if (req.params.path == 'jquery.js') {
-        res.sendFile(__dirname + "/views/main/jquery.js", (err)=>{
-            if(err) {
-                sendError(err.status, err.message, res);
-            }
-        });
-    }
     else {
         try {
             if(CheckIdentity(req)) {

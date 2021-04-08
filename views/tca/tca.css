@@ -19,7 +19,7 @@ h1#time {
 }
 #subject {
     font-size: 4em;
-    margin: 0;
+    margin: 0.5em;
     font-weight: 200;
 }
 
@@ -29,7 +29,54 @@ h2#timepm {
 }
 
 h3#timetable {
-    margin: 0;
+    margin: 0.3em;
     padding-right: 1em;
     padding-left: 1em;
+}
+
+button.addrBtn {
+    padding: 0.2em 2em;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 5px;
+    background-color: #ddd;
+    font-weight: 400;
+    color: #333;
+    transition: background-color .2s;
+}
+.addrBtn:hover {
+    background-color: #aaa;
+}
+.addrBtn:active {
+    background-color: #999;
+}
+.toolBtn {
+    font-size: 1.3em !important;
+}
+div.addrContainer {
+    text-align: center;
+    margin: 0.5em;
+}
+.footer {
+    position: fixed;
+    bottom: 0.3em;
+    width: 100%;
+}
+.copyright {
+    font-weight: 300;
+    font-size: 1em;
+}
+
+p {
+    margin: 0;
+    width: fit-content;
+}
+
+a {
+    text-decoration: none;
+    color: cornflowerblue;
+}
+
+hr {
+    margin: 0;
 }
