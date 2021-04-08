@@ -19,13 +19,14 @@ h1#time {
 }
 #subject {
     font-size: 4em;
-    margin: 0.5em;
+    margin: 0.2em 0.5em 0.0em 0.5em;
     font-weight: 200;
 }
 
 h2#timepm {
     margin: 0;
     font-size: 2em;
+    margin-bottom: 0.2em;
 }
 
 h3#timetable {

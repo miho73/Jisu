@@ -110,7 +110,7 @@ function timeTicker() {
 
         if(histliveptr == liveptr) return;
         btns.style.display = "block";
-        current.style.display = "block";
+        current.style.display = "inline";
         histliveptr = liveptr;
         htmlSubject.innerText = subject[liveptr].name;
         htmlTl.innerText = "";
