@@ -120,7 +120,8 @@ app.get('/', (req, res)=>{
         }
     }
     else {
-        res.redirect("/auth");
+        res.redirect('/tca');
+        //res.redirect("/auth");
     }
 });
 
