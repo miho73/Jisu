@@ -226,9 +226,7 @@ function jojong() {
 }
 function attendance() {
     if(localStorage.getItem('name') == undefined) {
-        let name = prompt("학번과 이름을 입력해주세요.\n\"<여기 입력하는 문자열> 출석\"의 형태로 복사됩니다.", "20731 현창운");
-        if(name == undefined) return;
-        localStorage.setItem('name', name);
+        changeName();
     }
     else {
         navigator.permissions.query({name: "clipboard-write"}).then(result => {
@@ -243,7 +241,16 @@ function attendance() {
     }
 }
 function changeName() {
-    let name = prompt(`학번과 이름을 입력해주세요.\n지금은 "${localStorage.getItem('name')} 출석"이 복사됩니다.`, "20731 현창운");
+    let current = localStorage.getItem('name');
+    let name = prompt(`학번과 이름을 입력해주세요.\n${current == undefined ? `"<학번 이름>출석"이 복사됩니다.` : `지금은 "${current} 출석"이 복사됩니다.`}`, "20731 현창운");
     if(name == undefined) return;
+    $.ajax({
+        'url':'/tca/api/namechange',
+        'type':'POST',
+        'dataType':'text',
+        'data':{
+            'name':name
+        }
+    });
     localStorage.setItem('name', name);
 }
