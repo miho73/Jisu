@@ -244,13 +244,5 @@ function changeName() {
     let current = localStorage.getItem('name');
     let name = prompt(`학번과 이름을 입력해주세요.\n${current == undefined ? `"<학번 이름>출석"이 복사됩니다.` : `지금은 "${current} 출석"이 복사됩니다.`}`, "20731 현창운");
     if(name == undefined) return;
-    $.ajax({
-        'url':'/tca/api/namechange',
-        'type':'POST',
-        'dataType':'text',
-        'data':{
-            'name':name
-        }
-    });
     localStorage.setItem('name', name);
 }

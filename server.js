@@ -63,13 +63,7 @@ let DataDb = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, (err) 
         console.log('Connected to the DATA database.');
     }
 });
-let TcaLog = new sqlite3.Database('./db/tca_log.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) {
-        console.error(err.message);
-    } else {
-        console.log('Connected to the TCA_LOG database.');
-    }
-})
+
 IdenDb.serialize(()=>{
     IdenDb.each('CREATE TABLE IF NOT EXISTS iden('+
                 'user_code INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'+
@@ -85,28 +79,6 @@ DataDb.serialize(()=>{
                 'diary_content TEXT NOT NULL,'+
                 'added_by INTEGER NOT NULL);');
 });
-TcaLog.serialize(()=>{
-    TcaLog.each('CREATE TABLE IF NOT EXISTS log('+
-                'idx INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'+
-                'jisu_vers TEXT NOT NULL,'+
-                'ip_address TEXT NOT NULL,'+
-                'time TEXT NOT NULL,'+
-                'content TEXT NOT NULL,'+
-                'err_level TEXT NOT NULL);');
-});
-
-function addTcaLog(req, content, error) {
-    TcaLog.run(`INSERT INTO log(jisu_vers, ip_address, time, content, err_level) `+
-                `values (?, ?, ?, ?, ?)`,
-               [
-                   JISU_VERSION,
-                   req.headers['x-forwarded-for'] ||  req.connection.remoteAddress,
-                    new Date().toISOString(),
-                    content,
-                    error
-                ]);
-}
-
 
 var tca_subjects;
 var data = fs.readFileSync('./db/class.json');
@@ -187,7 +159,6 @@ app.get('/:path', (req, res)=>{
         res.render('tca/tca.ejs', {
             InitialTime: Math.round(Date.now())
         });
-        addTcaLog(req, 'mainpage request', 'info');
     }
     else {
         try {
@@ -343,10 +314,6 @@ app.get('/tca/:path', (req, res)=>{
     res.sendFile(__dirname + "/views/tca/"+req.params.path, (err)=>{
         if(err) {
             sendError(err.status, err.message, res);
-            addTcaLog(req, `content request for ${req.url}; ${err.status}:${err.message}`, 'error');
-        }
-        else {
-            addTcaLog(req, `content request for ${req.url}`, 'info');
         }
     });
 });
@@ -457,7 +424,6 @@ app.post('/tca/api/:type', (req, res)=>{
             fs.readFile('./db/timetable.json', (err, data)=>{
                 if(err) {
                     res.sendStatus(500);
-                    addTcaLog(req, `POST request for ${req.url}; 500 error`, 'error');
                 }
                 else {
                     const jsn = JSON.parse(data);
@@ -465,7 +431,6 @@ app.post('/tca/api/:type', (req, res)=>{
                         'Content-Type':'application/json',
                         'Status':'200'
                     })
-                    addTcaLog(req, `POST request for ${req.url}`, 'info');
                     res.send(jsn["time"]);
                 }
             });
@@ -478,7 +443,6 @@ app.post('/tca/api/:type', (req, res)=>{
             fs.readFile('./db/timetable.json', (err, data)=>{
                 if(err) {
                     res.sendStatus(500);
-                    addTcaLog(req, `POST request for ${req.url}; 500 error`, 'error');
                 }
                 else {
                     const jsn = JSON.parse(data);
@@ -486,7 +450,6 @@ app.post('/tca/api/:type', (req, res)=>{
                         'Content-Type':'application/json',
                         'Status':'200'
                     });
-                    addTcaLog(req, `POST request for ${req.url}`, 'info');
                     res.send(jsn[day]);
                 }
             });
@@ -504,19 +467,13 @@ app.post('/tca/api/:type', (req, res)=>{
                 'Content-Type':'application/json',
                 'Status':'200'
             });
-            addTcaLog(req, `POST request for ${req.url}`, 'info');
             res.send(retArr);
         }
-        else if(req.params.type == "namechange") {
-            addTcaLog(req, `Set its name to "${req.body.name}"`, `info`);
-        }
         else {
-            addTcaLog(req, `POST request for ${req.url}; 404 error`, 'notice');
             sendError(404, "Not Found");
         }
     }
     catch(err) {
-        addTcaLog(req, `POST request for ${req.url}; 400 bad request`, 'notice');
         sendError(400, "Bad Request: "+err, res);
     }
 });
