@@ -21,7 +21,8 @@ const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const crypto = require('crypto');
 
-app.set("view engine", "ejs"); 
+app.enable('trust proxy');
+app.set("view engine", "ejs");
 
 function randomString(length) {
     var result           = [];
@@ -44,8 +45,13 @@ app.use(favicon(__dirname + '/resources/favicon.ico'));
 app.use('/auth', express.static('views/auth'))
 app.use(cookieParser());
 
+/*
 const HTTP_PORT = 8080;
 const HTTPS_PORT = 4433;
+*/
+const HTTP_PORT = 80;
+const HTTPS_PORT = 443;
+
 
 //Init DB
 let IdenDb = new sqlite3.Database('./db/iden.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -99,7 +105,7 @@ function addTcaLog(req, content, error) {
                 `values (?, ?, ?, ?, ?)`,
                [
                    JISU_VERSION,
-                    req.header('x-forwarded-for') || req.connection.remoteAddress, 
+                   req.headers['x-forwarded-for'] ||  req.connection.remoteAddress,
                     new Date().toISOString(),
                     content,
                     error
