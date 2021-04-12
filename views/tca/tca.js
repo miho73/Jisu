@@ -77,7 +77,7 @@ function timeTicker() {
             if(compareTime(mark, nowt) > 0) return;
             liveptr++;
         });
-        if(liveptr == timetable.length-1 && compareTime(nowt, time[timetable.length-1][1].split(':')) > 0) {
+        if(liveptr == timetable.length-1 && compareTime(nowt, time[timetable.length-1][1].split(':')) >= 0) {
             htmlSubject.innerText = "종료";
             htmlTl.innerText = "";
             btns.style.display = "none";
@@ -93,33 +93,34 @@ function timeTicker() {
             liveptr_upload = -1;
             return;
         }
-        let t1 = new Array(3), t2 = new Array(3);
-        t1[0] = now.getHours();
-        t1[1] = now.getMinutes();
-        t1[2] = now.getSeconds();
-        const tmpT = time[liveptr][1].split(':');
-        t2[0] = tmpT[0];
-        t2[1] = tmpT[1];
-        t2[2] = 0;
-        const timeRemain = getDiff(t1, t2);
-        const timeRemainStr = new Array(3);
-        timeRemainStr[0] = timeRemain[0].toString().padStart(2, '0');
-        timeRemainStr[1] = timeRemain[1].toString().padStart(2, '0');
-        timeRemainStr[2] = timeRemain[2].toString().padStart(2, '0');
-        htmlTl.innerText = timeRemainStr.join(':');
+        else {
+            let t1 = new Array(3), t2 = new Array(3);
+            t1[0] = now.getHours();
+            t1[1] = now.getMinutes();
+            t1[2] = now.getSeconds();
+            const tmpT = time[liveptr][1].split(':');
+            t2[0] = tmpT[0];
+            t2[1] = tmpT[1];
+            t2[2] = 0;
+            const timeRemain = getDiff(t1, t2);
+            const timeRemainStr = new Array(3);
+            timeRemainStr[0] = timeRemain[0].toString().padStart(2, '0');
+            timeRemainStr[1] = timeRemain[1].toString().padStart(2, '0');
+            timeRemainStr[2] = timeRemain[2].toString().padStart(2, '0');
+            htmlTl.innerText = timeRemainStr.join(':');
 
-        if(histliveptr == liveptr) return;
-        btns.style.display = "block";
-        current.style.display = "inline";
-        histliveptr = liveptr;
-        htmlSubject.innerText = subject[liveptr].name;
-        htmlTl.innerText = "";
-        current.innerText = subject[liveptr].name;
-        console.log(liveptr+1+" "+timetable.length);
-        if(liveptr+1 < timetable.length) {
-            next.innerText = subject[liveptr+1].name;
+            if(histliveptr == liveptr) return;
+            btns.style.display = "block";
+            current.style.display = "inline";
+            histliveptr = liveptr;
+            htmlSubject.innerText = subject[liveptr].name;
+            htmlTl.innerText = "";
+            current.innerText = subject[liveptr].name;
+            if(liveptr+1 < timetable.length) {
+                next.innerText = subject[liveptr+1].name;
+            }
+            liveptr_upload = liveptr;
         }
-        liveptr_upload = liveptr;
     }, 1000);
 }
 
