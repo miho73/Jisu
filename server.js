@@ -2,7 +2,7 @@
 
 const DEBUG_FLAG = false;
 const TCA_REQUIRED_FLAG = true;
-const JISU_VERSION = "2.7.1";
+const JISU_VERSION = "2.7.2";
 
 if(DEBUG_FLAG) {
     console.log("YOU'RE DEBUGGING NOW. ALL SECURITY FEATURES WILL BE DISABLED.");
