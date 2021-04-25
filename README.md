@@ -9,7 +9,7 @@
 > * 서버 인증서 제공	[SSL For Free](https://www.sslforfree.com/)
 ### Credits
 > * 현창운(Miho)
->   *계획
+>   * 계획
 >   * 디자인
 >   * 서버 개발
 >   * 서버 구성
