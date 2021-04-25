@@ -4,6 +4,8 @@ const DEBUG_FLAG = false;
 const TCA_REQUIRED_FLAG = true;
 const JISU_VERSION = "2.7.2";
 
+console.log(`Jisu v${JISU_VERSION}\n\n`);
+
 if(DEBUG_FLAG) {
     console.log("YOU'RE DEBUGGING NOW. ALL SECURITY FEATURES WILL BE DISABLED.");
     console.log("DEBUGGING SESSION IN HOSTING ON 8080(HTTP) and 4433(HTTPS)");
