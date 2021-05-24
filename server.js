@@ -22,6 +22,7 @@ const https = require('https');
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
 const crypto = require('crypto');
+var sanitizeHtml = require('sanitize-html');
 
 app.enable('trust proxy');
 app.set("view engine", "ejs");
@@ -47,8 +48,8 @@ app.use(favicon(__dirname + '/resources/favicon.ico'));
 app.use('/auth', express.static('views/auth'))
 app.use(cookieParser());
 
-const HTTP_PORT = 80;
-const HTTPS_PORT = 443;
+const HTTP_PORT = 8888;
+const HTTPS_PORT = 4444;
 
 //Init DB
 let IdenDb = new sqlite3.Database('./db/iden.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -318,6 +319,17 @@ app.get('/tca/:path', (req, res)=>{
             sendError(err.status, err.message, res);
         }
     });
+});
+
+let note;
+app.post('/tca/note', (req, res)=>{
+    if(req.body.cont != null) {
+        note = sanitizeHtml(req.body.cont);
+    }
+    res.sendStatus(200);
+});
+app.post('/tca/noteget', (req, res)=>{
+    res.send(note);
 });
 
 app.get('/utils/:path', (req, res)=>{

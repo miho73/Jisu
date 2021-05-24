@@ -66,6 +66,16 @@ function timeTicker() {
     
     let histliveptr = -2;
     setIntervalAndExecute(function() {
+        $.ajax({
+            'url':'/tca/noteget',
+            'type':'POST',
+            'success': function(data) {
+                document.getElementById('share-pan').value = data;
+            },
+            'error': function(data) {
+                display.innerText = "CANNOT GET NOTE";
+            }
+        });
         let now = new Date();
         let liveptr = -1;
         display.innerText = getToday(now);
@@ -246,4 +256,16 @@ function changeName() {
     let name = prompt(`학번과 이름을 입력해주세요.\n${current == undefined ? `"<학번 이름>출석"이 복사됩니다.` : `지금은 "${current} 출석"이 복사됩니다.`}`, "20731 현창운");
     if(name == undefined) return;
     localStorage.setItem('name', name);
+}
+
+function uploadNote(data) {
+    $.ajax({
+        'url':'/tca/note',
+        'type':'POST',
+        'data':{'cont':document.getElementById('share-pan').value},
+        'success': function(data) {},
+        'error': function(data) {
+            display.innerText = "CANNOT SYNC NOTE";
+        }
+    });
 }

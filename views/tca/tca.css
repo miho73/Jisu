@@ -87,3 +87,14 @@ a {
 hr {
     margin: 0;
 }
+
+textarea#share-pan {
+    width: 100%;
+    height: fit-content;
+    min-height: 150px;
+    outline: none;
+    font-size: 1.3em;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
