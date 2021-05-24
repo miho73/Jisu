@@ -2,7 +2,7 @@
 
 const DEBUG_FLAG = false;
 const TCA_REQUIRED_FLAG = true;
-const JISU_VERSION = "2.7.2";
+const JISU_VERSION = "2.7.5";
 
 console.log(`Jisu v${JISU_VERSION}\n\n`);
 

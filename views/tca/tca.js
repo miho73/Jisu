@@ -66,6 +66,9 @@ function timeTicker() {
     
     let histliveptr = -2;
     setIntervalAndExecute(function() {
+        if(document.activeElement == document.getElementById('share-pan')) {
+            return;
+        }
         $.ajax({
             'url':'/tca/noteget',
             'type':'POST',
@@ -76,6 +79,8 @@ function timeTicker() {
                 display.innerText = "CANNOT GET NOTE";
             }
         });
+    }, 4000);
+    setIntervalAndExecute(function() {
         let now = new Date();
         let liveptr = -1;
         display.innerText = getToday(now);
