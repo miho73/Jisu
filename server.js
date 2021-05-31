@@ -506,8 +506,8 @@ app.use(function(req, res, next) {
 });
   
 var options = {
-    key: fs.readFileSync('./cert/private.key'),
-    cert: fs.readFileSync('./cert/certificate.crt')
+    key: fs.readFileSync('./cert/private.pem'),
+    cert: fs.readFileSync('./cert/cert.pem')
 };
 
 app.listen(HTTP_PORT);
