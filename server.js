@@ -506,8 +506,9 @@ app.use(function(req, res, next) {
 });
   
 var options = {
-    key: fs.readFileSync('./cert/private.pem'),
-    cert: fs.readFileSync('./cert/cert.pem')
+    ca: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr-0001/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr-0001/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr-0001/cert.pem')
 };
 
 app.listen(HTTP_PORT);
