@@ -1,6 +1,5 @@
 # Jisu
 ## Hyunc Archieve Storage
-[![Node.js CI](https://github.com/miho73/Jisu/actions/workflows/node.js.yml/badge.svg)](https://github.com/miho73/Jisu/actions/workflows/node.js.yml)
 ### About
 > * 서버 프레임워크	NodeJS v15.7.0
 > * 서버 OS	Windows 10, WSL2 기반 Docker 사용
