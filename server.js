@@ -53,11 +53,7 @@ app.all('*', (req, res, next) => {
 });
 
 app.get('/', (req, res)=>{
-    res.sendFile(__dirname + "/views/tca/tca.ejs", (err)=>{
-        if(err) {
-            sendError(err.status, err.message, res);
-        }
-    });
+    res.render('tca/tca.ejs');
 });
 
 app.get('/tca/:path', (req, res)=>{
