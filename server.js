@@ -131,23 +131,15 @@ app.post('/tca/api/:type', (req, res)=>{
     }
 });
 
-app.get('/.well-known/pki-validation/FF7E9E9E216747760D92326A8D6D36A3.txt', (req, res) =>{
-    res.sendFile(__dirname + "/cert/FF7E9E9E216747760D92326A8D6D36A3.txt", (err)=>{
-        if(err) {
-            sendError(404, 'That\'s an error', res);
-        }
-    });
-});
-
 //404 handle
-app.use(function(req, res, next) {
+app.use('*', function(req, res, next) {
     sendError(404, 'Not Found', res);
 });
   
 var options = {
-    ca: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr-0001/fullchain.pem'),
-    key: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr-0001/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr-0001/cert.pem')
+    ca: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/tca.r-e.kr/cert.pem')
 };
 
 app.listen(HTTP_PORT);
