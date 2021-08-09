@@ -4,7 +4,6 @@ const express = require('express');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const app = express();
-const cookieParser = require('cookie-parser');
 const https = require('https');
 const fs = require('fs');
 const sanitizeHtml = require('sanitize-html');
@@ -50,20 +49,6 @@ app.all('*', (req, res, next) => {
     else { let from = `${protocol}://${req.hostname}${req.url}`; 
         let to = `https://${req.hostname}${req.url}`;
         res.redirect(to); 
-    }
-});
-
-app.get('/images/:path', (req, res)=>{
-    var id = req.cookies.SESSION;
-    if(CheckIdentity(req)) {
-        res.sendFile(__dirname + "/views/main/images/"+req.params.path, (err)=>{
-            if(err) {
-                sendError(404, 'That\'s an error', res);
-            }
-        });
-    }
-    else {
-        sendError(403, 'Forbidden', res);
     }
 });
 
