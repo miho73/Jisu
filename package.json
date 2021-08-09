@@ -9,13 +9,10 @@
   "author": "Miho",
   "license": "MIT",
   "dependencies": {
-    "cookie-parser": "^1.4.5",
     "crypto": "^1.0.1",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
     "sanitize-html": "^2.4.0",
-    "serve-favicon": "^2.5.0",
-    "sqlite3": "^5.0.2"
+    "serve-favicon": "^2.5.0"
   }
 }
